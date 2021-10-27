@@ -1,0 +1,4 @@
+nameko == 2.14.0
+pytest == 6.2.5
+requests-mock == 1.9.3
+pytest-cov == 3.0.0
