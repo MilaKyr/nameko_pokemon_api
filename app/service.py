@@ -12,11 +12,13 @@ MovesInfo = TypeVar('MovesInfo', bound=List[Dict[str, Dict[str, str]]])
 
 @dataclass(frozen=True)
 class PokemonResponse:
+    """Stores the information from API about pokemon moves"""
     id: int
     moves_info: MovesInfo
     moves_names: List[str] = field(init=False)
 
     def parse_move_names(self) -> List[str]:
+        """Parse moves_info into list of move names, if None or no parameters throw exception"""
         if self.moves_info:
             try:
                 moves_info = [move_info.get("move") for move_info in self.moves_info]

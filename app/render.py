@@ -5,7 +5,7 @@ from app.service import PokemonResponse
 
 
 class MovesRender:
-
+    """Prints pokemon moves in the user-friendly way"""
     def __init__(self, pokemon_info: PokemonResponse):
         self.pokemon_info = pokemon_info
 
