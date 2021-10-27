@@ -32,7 +32,3 @@ def test_range_limit_int_type_fail_with_negative():
 
 def test_range_limit_int_type_fail_with_too_high_id():
     pytest.raises(ValueTooBig, check_range, 10_000)
-
-
-
-

@@ -20,5 +20,3 @@ def check_range(value: int):
         raise ValueTooBig(f"Value must be smaller than 898, provided {value}")
     elif value < MIN_POKEMON_ID:
         raise ValueTooSmall(f"Value must be bigger than 0, provided {value}")
-
-

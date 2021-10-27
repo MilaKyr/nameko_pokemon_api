@@ -1,7 +1,14 @@
 import sys
 import logging
 
-from app.errors import ValueTooSmall, InvalidValueType, ValueTooBig, Unavailable, InvalidRequestData, InvalidResponseData
+from app.errors import (
+    ValueTooSmall,
+    InvalidValueType,
+    ValueTooBig,
+    Unavailable,
+    InvalidRequestData,
+    InvalidResponseData,
+)
 from app.service import PokemonService
 from app.render import MovesRender
 from app.utils import check_if_float, check_range, check_if_int
@@ -38,4 +45,3 @@ if __name__ == "__main__":
             except Unavailable as e:
                 logging.critical("Server is unavailable, please try again later")
                 sys.exit()
-
