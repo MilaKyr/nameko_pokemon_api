@@ -2,6 +2,13 @@ from app.consts import MIN_POKEMON_ID, MAX_POKEMON_ID
 from app.errors import InvalidValueType, ValueTooBig, ValueTooSmall
 
 
+def check_input(value: [float, str, int]) -> int:
+    float_value = check_if_float(value)
+    int_value = check_if_int(float_value)
+    check_range(int_value)
+    return int_value
+
+
 def check_if_int(value: float) -> int:
     if value.is_integer():
         return int(value)

@@ -11,20 +11,21 @@ def pokemon_service():
     return worker_factory(PokemonService)
 
 
-def test_pokemon_response_past_init():
-    pokemon_info = PokemonResponse(
+@pytest.fixture
+def pokemon_response():
+    return PokemonResponse(
         id=0, moves_info=[{"move": {"name": "transform"}}, {"move": {"name": "jump"}}]
     )
-    assert pokemon_info.moves_names == ["transform", "jump"]
 
 
-def test_pokemon_response_sort_moves():
-    pokemon_info = PokemonResponse(
-        id=0, moves_info=[{"move": {"name": "transform"}}, {"move": {"name": "jump"}}]
-    )
-    assert pokemon_info.moves_names == ["transform", "jump"]
-    pokemon_info.sort_moves()
-    assert pokemon_info.moves_names == ["jump", "transform"]
+def test_pokemon_response_past_init(pokemon_response):
+    assert pokemon_response.moves_names == ["transform", "jump"]
+
+
+def test_pokemon_response_sort_moves(pokemon_response):
+    assert pokemon_response.moves_names == ["transform", "jump"]
+    pokemon_response.sort_moves()
+    assert pokemon_response.moves_names == ["jump", "transform"]
 
 
 def test_pokemon_response_with_no_moves():
@@ -38,18 +39,14 @@ def test_pokemon_response_with_arbitrary_field_names():
 
 
 def test_service(requests_mock):
+    pokemon_id = 1
+    moves_info = [{"move": {"name": "transform"}}, {"move": {"name": "jump"}}]
     pokemon_service = worker_factory(PokemonService)
     requests_mock.get(
-        f"{BASE_URL}/1",
-        json={
-            "id": 1,
-            "moves": [{"move": {"name": "transform"}}, {"move": {"name": "jump"}}],
-        },
+        f"{BASE_URL}/{pokemon_id}", json={"id": pokemon_id, "moves": moves_info}
     )
-    result = pokemon_service.get_pokemon_info(1)
-    assert result == PokemonResponse(
-        id=1, moves_info=[{"move": {"name": "transform"}}, {"move": {"name": "jump"}}]
-    )
+    result = pokemon_service.get_pokemon_info(pokemon_id)
+    assert result == PokemonResponse(id=pokemon_id, moves_info=moves_info)
 
 
 def test_service_fail(requests_mock):

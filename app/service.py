@@ -1,7 +1,7 @@
 from typing import List, Dict, TypeVar
-from nameko.rpc import rpc
 import requests
 from dataclasses import dataclass, field
+from nameko.rpc import rpc
 
 from app import errors
 from app.consts import BASE_URL
@@ -20,17 +20,19 @@ class PokemonResponse:
 
     def parse_move_names(self) -> List[str]:
         """Parse moves_info into list of move names, if None or no parameters throw exception"""
-        if self.moves_info:
-            try:
-                moves_info = [move_info.get("move") for move_info in self.moves_info]
-                moves = [info.get("name") for info in moves_info]
-                return moves
-            except (TypeError, AttributeError) as e:
-                raise errors.InvalidResponseData(
-                    f"Something wrong with the response from API, "
-                    f"more specifically: {e}"
-                )
-        raise errors.InvalidResponseData("Absent information about moves in response")
+        try:
+            assert self.moves_info
+            moves_info = [move_info.get("move") for move_info in self.moves_info]
+            moves = [info.get("name") for info in moves_info]
+            return moves
+        except (TypeError, AttributeError) as e:
+            raise errors.InvalidResponseData(
+                "Something wrong with the response from API, " f"more specifically: {e}"
+            )
+        except AssertionError:
+            raise errors.InvalidResponseData(
+                "Absent information about moves in response"
+            )
 
     def __post_init__(self):
         object.__setattr__(self, "moves_names", self.parse_move_names())

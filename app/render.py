@@ -1,7 +1,5 @@
-import logging
-
 from app.consts import ORDERED
-from app.service import PokemonResponse
+from app.service import PokemonResponse, PokemonService
 
 
 class MovesRender:
@@ -18,4 +16,9 @@ class MovesRender:
         print(f"{msg}:")
         print("-" * 50)
         for move in self.pokemon_info.moves_names:
-            print(move, "\t")
+            print(f"{move} \t")
+
+
+def print_pokemon_moves(for_id: int) -> None:
+    pokemon_info = PokemonService().get_pokemon_info(for_id)
+    MovesRender(pokemon_info).show_moves()
