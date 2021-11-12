@@ -25,15 +25,15 @@ if __name__ == "__main__":
             successful_input = True
         except (ValueTooSmall, ValueTooBig, InvalidValueType) as e:
             logging.warning(f"{e}. Try again! \t")
-        except EOFError as e:
+        except (EOFError, KeyboardInterrupt) as e:
             logging.warning("Stopping the program")
-            sys.exit()
+            sys.exit(1)
         else:
             try:
                 print_pokemon_moves(pokemon_id)
             except (InvalidRequestData, InvalidResponseData) as e:
                 logging.critical(e)
-                sys.exit()
+                sys.exit(e)
             except Unavailable as e:
                 logging.critical("Server is unavailable, please try again later")
-                sys.exit()
+                sys.exit(e)
