@@ -1,6 +1,7 @@
 import pytest
 import requests
 from nameko.testing.services import worker_factory
+from dataclasses import asdict
 from app.errors import Unavailable, InvalidResponseData, InvalidRequestData
 from app.consts import BASE_URL
 from app.service import PokemonResponse, PokemonService
@@ -46,7 +47,7 @@ def test_service(requests_mock):
         f"{BASE_URL}/{pokemon_id}", json={"id": pokemon_id, "moves": moves_info}
     )
     result = pokemon_service.get_pokemon_info(pokemon_id)
-    assert result == PokemonResponse(id=pokemon_id, moves_info=moves_info)
+    assert result == asdict(PokemonResponse(id=pokemon_id, moves_info=moves_info))
 
 
 def test_service_fail(requests_mock):

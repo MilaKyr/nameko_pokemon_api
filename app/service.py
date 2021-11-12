@@ -1,6 +1,6 @@
-from typing import List, Dict, TypeVar
+from typing import List, Dict, TypeVar, Union
 import requests
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from nameko.rpc import rpc
 
 from app import errors
@@ -13,7 +13,6 @@ MovesInfo = TypeVar("MovesInfo", bound=List[Dict[str, Dict[str, str]]])
 @dataclass(frozen=True)
 class PokemonResponse:
     """Stores the information from API about pokemon moves"""
-
     id: int
     moves_info: MovesInfo
     moves_names: List[str] = field(init=False)
@@ -45,13 +44,13 @@ class PokemonService:
     name = "pokemon_service"
 
     @rpc
-    def get_pokemon_info(self, pokemon_id: int) -> PokemonResponse:
+    def get_pokemon_info(self, pokemon_id: int) -> Dict[str, Union[int, MovesInfo, List[str]]]:
         try:
             response = requests.get(f"{BASE_URL}/{pokemon_id}", timeout=5)
             response.raise_for_status()
 
             data = response.json()
-            return PokemonResponse(id=data.get("id"), moves_info=data.get("moves"))
+            return asdict(PokemonResponse(id=data.get("id"), moves_info=data.get("moves")))
         except requests.exceptions.HTTPError as e:
             raise errors.InvalidRequestData(e)
         except (requests.ConnectionError, requests.Timeout) as e:
