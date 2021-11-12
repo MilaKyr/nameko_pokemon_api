@@ -21,5 +21,7 @@ class MovesRender:
 
 def print_pokemon_moves(for_id: int) -> None:
     pokemon_info = PokemonService().get_pokemon_info(for_id)
-    pokemon_response = PokemonResponse(id=pokemon_info["id"], moves_info=pokemon_info["moves_info"])
+    pokemon_response = PokemonResponse(
+        id=pokemon_info["id"], moves_info=pokemon_info["moves_info"]
+    )
     MovesRender(pokemon_response).show_moves()

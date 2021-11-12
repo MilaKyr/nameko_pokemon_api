@@ -24,6 +24,10 @@ def check_if_float(value: [float, str, int]) -> float:
 
 def check_range(value: int):
     if value > MAX_POKEMON_ID:
-        raise ValueTooBig(f"Value must be smaller than {MAX_POKEMON_ID}, provided {value}")
+        raise ValueTooBig(
+            f"Value must be smaller than {MAX_POKEMON_ID}, provided {value}"
+        )
     elif value < MIN_POKEMON_ID:
-        raise ValueTooSmall(f"Value must be bigger than or equal to {MIN_POKEMON_ID}, provided {value}")
+        raise ValueTooSmall(
+            f"Value must be bigger than or equal to {MIN_POKEMON_ID}, provided {value}"
+        )
